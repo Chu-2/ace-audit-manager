@@ -1,0 +1,15 @@
+services:
+  - docker
+
+env:
+  global:
+    - ACE_VER=(grep "ENV ACE_V" Dockerfile | cut -d "=" -f2)
+
+before_install:
+  - docker build -t richyu346/ace-audit-manager:latest -t richyu346/ace-audit-manager:$ACE_VER -f ./Dockerfile .
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
