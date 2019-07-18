@@ -5,7 +5,7 @@ env:
   global:
     - ACE_VER=$(grep "ENV ACE_V" Dockerfile | cut -d "=" -f2)
 
-before_install:
+script:
   - docker build -t $DOCKER_USERNAME/ace-audit-manager:latest -t $DOCKER_USERNAME/ace-audit-manager:$ACE_VER -f ./Dockerfile .
 
 deploy:
