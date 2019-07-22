@@ -1,11 +1,19 @@
 # ACE Audit Manager docker
 
-- [Introduction](#introduction)
-- [Background](#background)
-- [Dependencies](#dependencies)
-- [Environment Variables](#environment-variables)
-- [Deployment](#deployment)
-- [Scripts](#scripts)
+[![Build Status](https://travis-ci.org/Chu-2/ace-audit-manager.svg?branch=master)](https://travis-ci.org/Chu-2/ace-audit-manager)
+
+- [ACE Audit Manager docker](#ace-audit-manager-docker)
+	- [Introduction](#introduction)
+	- [Background](#background)
+	- [Dependencies](#dependencies)
+		- [Host system dependencies](#host-system-dependencies)
+		- [External dependencies](#external-dependencies)
+	- [Environment Variables](#environment-variables)
+	- [Deployment](#deployment)
+	- [Self contained](#self-contained)
+	- [Singleton](#singleton)
+	- [Scripts](#scripts)
+		- [parse-checksum-duplicates.pl](#parse-checksum-duplicatespl)
 
 ## Introduction
 
@@ -66,11 +74,11 @@ A docker-compose example integrating with a mysql docker container is located at
 To test out ACE Audit Manager, run the following commands:
 
 ```
-	
+
 	git clone https://github.com/ualibraries/ace-audit-manager.git
 	cd ace-audit-manager/compose/fixity-db
 	docker-compose up -d
-	
+
 ```
 
 Then browse to [http://localhost:8080/ace-am](http://localhost:8080/ace-am)
@@ -80,12 +88,12 @@ After getting it up and running, follow the [3. Register your first collection](
 To cleanup the above test instance, run:
 
 ```
-	
+
 	git clone https://github.com/ualibraries/ace-audit-manager.git
 	cd ace-audit-manager/compose/fixity
 	docker-compose rm -fsv
 	docker volume prune  # Enter y
-	
+
 ```
 
 Two docker containers will be created, validate by running **docker ps -a**
@@ -107,18 +115,15 @@ Ace Audit manager is quite feature-full, however some scripts have been written 
 
 Ace-ims can generate a duplicate file report by clicking on a collection, then clicking on the *more...*->*Show Duplicate Files* menu item. However, this times out for huge archives, so a workaround is to download the checksum list report via *more...*->*Download checkm list* and on the command line run the **parse-checksum-duplicates.pl** script against the checksum list via:
 
-
 ```
-	
+
 	cat Summary.txt | ./parse-checksum-duplicates.pl > duplicates.txt
-	
+
 ```
 
 The duplicate files are organized by their common checksum value. This script requires that perl is installed and in the PATH environment variable list.
- 
+
 At the end of the report are two summations:
 
 * DUPLICATES_FILES - contains the total count of files that should get removed so that there are no more duplicates in the collection.
 * DUPLICATES_TOTAL - contains the number of duplicate sets, ie files that all have the same checksum, within the collection.
-
-
